@@ -29,50 +29,73 @@ export default class Game {
     }
 
     if (this.enemyTimer > this.enemyInterval) {
-      let x = Math.random() < 0.5 ? 0 : this.width // spawn on left or right edge
-      let y = Math.random() < 0.5 ? 0 : this.height // spawn on top or bottom edge
-      if (x === 0) {
-        y = Math.random() * this.height // if on left edge, randomize y position
-      } else if (x === this.width) {
-        y = Math.random() * this.height // if on right edge, randomize y position
-      } else if (y === 0) {
-        x = Math.random() * this.width // if on top edge, randomize x position
-      } else {
-        x = Math.random() * this.width // if on bottom edge, randomize x position
-      }
-      if (Math.random() < 0.2) {
-        this.enemies.push(new Candy(this, x, y))
-      } else {
-        this.enemies.push(new Pumpkin(this, x, y))
-      }
-      this.enemyTimer = 0
-    } else {
-      this.enemyTimer += deltaTime
-    }
-    this.player.update(deltaTime)
-
-    this.enemies.forEach((enemy) => {
-      enemy.update(this.player)
-      if (this.checkCollision(this.player, enemy)) {
-        this.player.lives--
-        enemy.markedForDeletion = true
-        if (enemy.type === 'candy') {
-          this.player.ammo += 5
+        let x = Math.random() < 0.5 ? 0 : this.width // spawn on left or right edge
+        let y = Math.random() < 0.5 ? 0 : this.height // spawn on top or bottom edge
+        if (x === 0) {
+          y = Math.random() * this.height // if on left edge, randomize y position
+        } else if (x === this.width) {
+          y = Math.random() * this.height // if on right edge, randomize y position
+        } else if (y === 0) {
+          x = Math.random() * this.width // if on top edge, randomize x position
+        } else {
+          x = Math.random() * this.width // if on bottom edge, randomize x position
         }
+        if (Math.random() < 0.2) {
+          this.enemies.push(new Candy(this, x, y))
+        } else {
+          this.enemies.push(new Pumpkin(this, x, y))
+        }
+        this.enemyTimer = 0
+      } else {
+        this.enemyTimer += deltaTime
       }
-      this.player.projectiles.forEach((projectile) => {
-        if (this.checkCollision(projectile, enemy)) {
-          if (enemy.lives > 1) {
-            enemy.lives -= projectile.damage
-          } else {
-            enemy.markedForDeletion = true
+    
+      // Check if player is going out of bounds and adjust their position accordingly
+      if (this.player.x < 0) {
+        this.player.x = 0
+      } else if (this.player.x > this.width - this.player.width) {
+        this.player.x = this.width - this.player.width
+      }
+      if (this.player.y < 0) {
+        this.player.y = 0
+      } else if (this.player.y > this.height - this.player.height) {
+        this.player.y = this.height - this.player.height
+      }
+    
+      this.player.update(deltaTime)
+    
+      let allEnemiesDefeated = true
+      this.enemies.forEach((enemy) => {
+        enemy.update(this.player)
+        if (this.checkCollision(this.player, enemy)) {
+          this.player.lives--
+          enemy.markedForDeletion = true
+          if (enemy.type === 'candy') {
+            this.player.ammo += 5
           }
-          projectile.markedForDeletion = true
+        }
+        this.player.projectiles.forEach((projectile) => {
+          if (this.checkCollision(projectile, enemy)) {
+            if (enemy.lives > 1) {
+              enemy.lives -= projectile.damage
+            } else {
+              enemy.markedForDeletion = true
+            }
+            projectile.markedForDeletion = true
+          }
+        })
+        if (!enemy.markedForDeletion) {
+          allEnemiesDefeated = false
         }
       })
-    })
-    this.enemies = this.enemies.filter((enemy) => !enemy.markedForDeletion)
-  }
+    
+      if (allEnemiesDefeated && this.enemies.length > 0) {
+        this.round++
+        this.initializeEnemies()
+      }
+    
+      this.enemies = this.enemies.filter((enemy) => !enemy.markedForDeletion)
+    }
 
   draw(context) {
     this.ui.draw(context)
@@ -90,4 +113,5 @@ export default class Game {
       object1.height + object1.y > object2.y
     )
   }
+
 }
