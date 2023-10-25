@@ -19,7 +19,7 @@ export default class Game {
     this.enemies = []
     this.enemyTimer = 0
     this.enemyInterval = 1000
-
+    
     this.player = new Player(this)
   }
 
@@ -113,5 +113,4 @@ export default class Game {
       object1.height + object1.y > object2.y
     )
   }
-
 }
