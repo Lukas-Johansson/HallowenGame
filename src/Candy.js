@@ -1,6 +1,6 @@
-import Enemy from './Enemy'
+import Usable from './Usable'
 
-export default class Candy extends Enemy {
+export default class Candy extends Usable {
   constructor(game, x, y) {
     super(game)
     this.width = 32
@@ -9,7 +9,7 @@ export default class Candy extends Enemy {
     this.y = y
     this.speed = 0
     this.lives = 1
-    this.color = '#0f0'
-    this.type = 'candy'
+    this.color = 'blue'
+    this.type = 'usable'
   }
 }

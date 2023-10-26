@@ -1,116 +1,147 @@
-import InputHandler from './InputHandler.js'
-import Player from './Player.js'
-import UserInterface from './UserInterface.js'
-import Pumpkin from './Pumpkin.js'
-import Candy from './Candy.js'
+import InputHandler from './InputHandler.js';
+import Player from './Player.js';
+import UserInterface from './UserInterface.js';
+import Pumpkin from './Pumpkin.js';
+import Candy from './Candy.js';
+
 export default class Game {
-  constructor(width, height, canvasPosition) {
-    this.width = width
-    this.height = height
-    this.canvasPosition = canvasPosition
-    this.input = new InputHandler(this)
-    this.ui = new UserInterface(this)
-    this.keys = []
-    this.enemies = []
-    this.gameOver = false
-    this.gravity = 1
-    this.debug = false
-    this.gameTime = 0
-    this.enemies = []
-    this.enemyTimer = 0
-    this.enemyInterval = 1000
-    
-    this.player = new Player(this)
-  }
-
-  update(deltaTime) {
-    if (!this.gameOver) {
-      this.gameTime += deltaTime
+    constructor(width, height, canvasPosition) {
+        this.width = width;
+        this.height = height;
+        this.canvasPosition = canvasPosition;
+        this.input = new InputHandler(this);
+        this.ui = new UserInterface(this);
+        this.keys = [];
+        this.usable = [];
+        this.enemies = [];
+        this.gameOver = false;
+        this.gravity = 1;
+        this.debug = false;
+        this.gameTime = 0;
+        this.wave = 0; // Current wave
+        this.enemyTimer = 0;
+        this.enemyInterval = 1; // Adjust this interval as needed (e.g., increase it)
+        this.enemiesPerWave = 1; // Number of enemies per wave (e.g., reduce it)    
+        this.enemiesSpawnedInWave = 0; // Number of enemies spawned in the current wave
+        this.player = new Player(this);
+        this.waveInProgress = true; // Initialize the flag to indicate that a wave is in progress
+        this.round = 1; // Initialize the round to 1
     }
 
-    if (this.enemyTimer > this.enemyInterval) {
-        let x = Math.random() < 0.5 ? 0 : this.width // spawn on left or right edge
-        let y = Math.random() < 0.5 ? 0 : this.height // spawn on top or bottom edge
-        if (x === 0) {
-          y = Math.random() * this.height // if on left edge, randomize y position
-        } else if (x === this.width) {
-          y = Math.random() * this.height // if on right edge, randomize y position
-        } else if (y === 0) {
-          x = Math.random() * this.width // if on top edge, randomize x position
-        } else {
-          x = Math.random() * this.width // if on bottom edge, randomize x position
+    update(deltaTime) {
+        if (!this.gameOver) {
+            this.gameTime += deltaTime;
         }
-        if (Math.random() < 0.2) {
-          this.enemies.push(new Candy(this, x, y))
-        } else {
-          this.enemies.push(new Pumpkin(this, x, y))
-        }
-        this.enemyTimer = 0
-      } else {
-        this.enemyTimer += deltaTime
-      }
-    
-      // Check if player is going out of bounds and adjust their position accordingly
-      if (this.player.x < 0) {
-        this.player.x = 0
-      } else if (this.player.x > this.width - this.player.width) {
-        this.player.x = this.width - this.player.width
-      }
-      if (this.player.y < 0) {
-        this.player.y = 0
-      } else if (this.player.y > this.height - this.player.height) {
-        this.player.y = this.height - this.player.height
-      }
-    
-      this.player.update(deltaTime)
-    
-      let allEnemiesDefeated = true
-      this.enemies.forEach((enemy) => {
-        enemy.update(this.player)
-        if (this.checkCollision(this.player, enemy)) {
-          this.player.lives--
-          enemy.markedForDeletion = true
-          if (enemy.type === 'candy') {
-            this.player.ammo += 5
-          }
-        }
-        this.player.projectiles.forEach((projectile) => {
-          if (this.checkCollision(projectile, enemy)) {
-            if (enemy.lives > 1) {
-              enemy.lives -= projectile.damage
+
+        if (this.enemiesSpawnedInWave < this.enemiesPerWave) {
+            if (this.enemyTimer > this.enemyInterval) {
+                const enemiesToSpawn = Math.min(this.enemiesPerWave - this.enemiesSpawnedInWave);
+                console.log(this.enemiesPerWave)
+
+                for (let i = 0; i < enemiesToSpawn; i++) {
+                    let x = Math.random() < 0.5 ? 0 : this.width;
+                    let y = Math.random() < 0.5 ? 0 : this.height;
+                    if (x === 0) {
+                        y = Math.random() * this.height;
+                    } else if (x === this.width) {
+                        y = Math.random() * this.height;
+                    } else if (y === 0) {
+                        x = Math.random() * this.width;
+                    } else {
+                        y = Math.random() * this.height;
+                    }
+                    if (Math.random() < 0.2) {
+                        this.enemies.push(new Pumpkin(this, x, y));
+                    } else {
+                        this.enemies.push(new Pumpkin(this, x, y));
+                        this.usable.push(new Candy(this, 10, 10));
+                        console.log(this.usable)
+                    }
+                }
+
+                this.enemyTimer = 0;
+                this.enemiesSpawnedInWave += enemiesToSpawn;
             } else {
-              enemy.markedForDeletion = true
+                this.enemyTimer += deltaTime;
             }
-            projectile.markedForDeletion = true
-          }
-        })
-        if (!enemy.markedForDeletion) {
-          allEnemiesDefeated = false
+        } else {
+            // All enemies in the current wave have been spawned.
+            if (this.enemies.length === 0) {
+                if(this.usable.length === 0) {
+                this.waveInProgress = false; // Set the flag to indicate that the wave is no longer in progress.
+                this.startWave(); // Start a new wave.
+            }
+            }
         }
-      })
+
+        this.player.update(deltaTime);
+
+        this.enemies.forEach((enemy) => {
+            enemy.update(this.player);
+            if (this.checkCollision(this.player, enemy)) {
+                this.player.lives--;
+                enemy.markedForDeletion = true;
+            }
+
+            this.player.projectiles.forEach((projectile) => {
+                if (this.checkCollision(projectile, enemy,)) {
+                    if (enemy.lives > 1) {
+                        enemy.lives -= projectile.damage;
+                    } else {
+                        enemy.markedForDeletion = true;
+                    }
+                    projectile.markedForDeletion = true;
+                }
+            });
+        });
+        this.enemies = this.enemies.filter((enemy) => !enemy.markedForDeletion);
+
+        this.usable.forEach((usable) => {
+            usable.update(this.player);
+            if (this.checkCollisionUsable(this.player, usable)) {
+                this.player.ammo += 5;
+                usable.markedForDeletion = true;
+            }
+        });
     
-      if (allEnemiesDefeated && this.enemies.length > 0) {
-        this.round++
-        this.initializeEnemies()
-      }
-    
-      this.enemies = this.enemies.filter((enemy) => !enemy.markedForDeletion)
+
+        this.usable = this.usable.filter((usable) => !usable.markedForDeletion);
     }
 
-  draw(context) {
-    this.ui.draw(context)
-    this.player.draw(context)
-    this.enemies.forEach((enemy) => {
-      enemy.draw(context)
-    })
-  }
+    startWave() {
+        this.wave++;
+        this.enemiesSpawnedInWave = 0;
+        this.enemiesPerWave++; // Increase the number of enemies per wavedw
+        this.enemyTimer = 0; // Reset the enemy spawn timer.
+        this.round++; // Increment the round
+    }
 
-  checkCollision(object1, object2) {
-    return (
-      object1.x < object2.x + object2.width &&
-      object1.x + object1.width > object2.x &&
-      object1.y < object2.y + object2.height &&
-      object1.height + object1.y > object2.y
-    )
-  }
+    draw(context) {
+        this.ui.draw(context);
+        this.player.draw(context);
+        this.usable.forEach((usable) => {
+            usable.draw(context);
+        });
+        this.enemies.forEach((enemy) => {
+            enemy.draw(context);
+        });
+    }
+
+    checkCollision(object1, object2) {
+        return (
+            object1.x < object2.x + object2.width &&
+            object1.x + object1.width > object2.x &&
+            object1.y < object2.y + object2.height &&
+            object1.y + object1.height > object2.y
+        );
+    }
+
+    checkCollisionUsable(object1, object2) {
+        return (
+            object1.x < object2.x + object2.width &&
+            object1.x + object1.width > object2.x &&
+            object1.y < object2.y + object2.height &&
+            object1.y + object1.height > object2.y
+        );
+    }
 }
