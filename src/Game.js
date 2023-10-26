@@ -52,9 +52,9 @@ export default class Game {
                     }
                     if (Math.random() < 0.2) {
                         this.enemies.push(new Pumpkin(this, x, y));
+                        this.usable.push(new Candy(this, 20, 150));
                     } else {
                         this.enemies.push(new Pumpkin(this, x, y));
-                        this.usable.push(new Candy(this, 10, 10));
                         console.log(this.usable)
                     }
                 }

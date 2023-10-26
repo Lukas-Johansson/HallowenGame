@@ -9,7 +9,7 @@ export default class Pumpkin extends Enemy {
     this.y = y
     this.speed = 2
     this.lives = Math.floor(Math.random() * 3) + 1
-    this.color = 'orange'
+    this.color = 'white'
   }
 
   update(player) {
