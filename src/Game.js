@@ -36,7 +36,6 @@ export default class Game {
         if (this.enemiesSpawnedInWave < this.enemiesPerWave) {
             if (this.enemyTimer > this.enemyInterval) {
                 const enemiesToSpawn = Math.min(this.enemiesPerWave - this.enemiesSpawnedInWave);
-                console.log(this.enemiesPerWave)
 
                 for (let i = 0; i < enemiesToSpawn; i++) {
                     let x = Math.random() < 0.5 ? 0 : this.width;
@@ -51,11 +50,9 @@ export default class Game {
                         y = Math.random() * this.height;
                     }
                     if (Math.random() < 0.2) {
-                        this.enemies.push(new Pumpkin(this, x, y));
                         this.usable.push(new Candy(this, 20, 150));
                     } else {
                         this.enemies.push(new Pumpkin(this, x, y));
-                        console.log(this.usable)
                     }
                 }
 
@@ -68,8 +65,8 @@ export default class Game {
             // All enemies in the current wave have been spawned.
             if (this.enemies.length === 0) {
                 if(this.usable.length === 0) {
-                this.waveInProgress = false; // Set the flag to indicate that the wave is no longer in progress.
-                this.startWave(); // Start a new wave.
+                this.waveInProgress = false; // Set the flag to indicate that the wave is no longer in progress
+                this.startWave(); // Start a new wave
             }
             }
         }
@@ -102,17 +99,30 @@ export default class Game {
                 this.player.ammo += 5;
                 usable.markedForDeletion = true;
             }
-        });
-    
 
+            this.player.projectiles.forEach((projectile) => {
+                if (this.checkCollision(projectile, usable,)) {
+                    if (usable.lives > 1) {
+                        usable.lives -= projectile.damage;
+                    } else {
+                        usable.markedForDeletion = true;
+                        this.player.ammo += 5;
+                    }
+                    projectile.markedForDeletion = true;
+                }
+            });
+        });
         this.usable = this.usable.filter((usable) => !usable.markedForDeletion);
+
+        if (this.player.lives <= 0) {
+        }
     }
 
     startWave() {
         this.wave++;
         this.enemiesSpawnedInWave = 0;
-        this.enemiesPerWave++; // Increase the number of enemies per wavedw
-        this.enemyTimer = 0; // Reset the enemy spawn timer.
+        this.enemiesPerWave++; // Increase the number of enemies per wave
+        this.enemyTimer = 0; // Reset the enemy spawn timer
         this.round++; // Increment the round
     }
 

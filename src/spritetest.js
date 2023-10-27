@@ -1,7 +1,5 @@
 import Projectile from './Projectile.js'
 import spriteImage from './assets/sprites/Idle Run (78x58).png'
-import Sound from './Sound.js'
-
 export default class Player {
   constructor(game) {
     this.game = game
@@ -10,18 +8,15 @@ export default class Player {
     this.x = 50
     this.y = 100
 
+    this.frameX = 0
+
     this.projectiles = []
 
     this.speedX = 0
     this.speedY = 0
     this.maxSpeed = 6
-
-    this.maxAmmo = 20
-    this.ammo = 20
-    this.ammoTimer = 0
-    this.ammoInterval = 500
-
-    this.lives = 10
+    this.jumpSpeed = 14
+    this.grounded = false
 
     // adding sprite image
     const image = new Image()
@@ -44,50 +39,43 @@ export default class Player {
   }
 
   update(deltaTime) {
-    if (this.lives <= 0) {
-      this.game.gameOver = true
-    }
-
-    if (this.game.keys.includes('ArrowLeft') || this.game.keys.includes('a')) {
+    if (this.game.keys.includes('ArrowLeft')) {
       this.speedX = -this.maxSpeed
-    } else if (
-      this.game.keys.includes('ArrowRight') ||
-      this.game.keys.includes('d')
-    ) {
+    } else if (this.game.keys.includes('ArrowRight')) {
       this.speedX = this.maxSpeed
     } else {
       this.speedX = 0
     }
 
-    if (this.game.keys.includes('ArrowUp') || this.game.keys.includes('w')) {
-      this.speedY = -this.maxSpeed
-    } else if (
-      this.game.keys.includes('ArrowDown') ||
-      this.game.keys.includes('s')
-    ) {
-      this.speedY = this.maxSpeed
-    } else {
+    if (this.game.keys.includes('ArrowUp') && this.grounded) {
+      this.speedY = -this.jumpSpeed
+      this.grounded = false
+    }
+
+    if (this.grounded) {
       this.speedY = 0
+    } else {
+      this.speedY += this.game.gravity
+    }
+
+    // play run or idle animation
+    if (this.speedX !== 0) {
+      this.frameY = 1
+    } else {
+      this.frameY = 0
     }
 
     this.y += this.speedY
     this.x += this.speedX
 
-    if (this.ammoTimer > this.ammoInterval && this.ammo < this.maxAmmo) {
-      this.ammoTimer = 0
-      this.ammo++
-    } else {
-      this.ammoTimer += deltaTime
-    }
-
     // projectiles
     this.projectiles.forEach((projectile) => {
-      projectile.update(deltaTime)
+      projectile.update()
     })
     this.projectiles = this.projectiles.filter(
       (projectile) => !projectile.markedForDeletion
     )
-  
+
     // flip sprite direction
     if (this.speedX < 0) {
       this.flip = true
@@ -110,22 +98,16 @@ export default class Player {
   }
 
   draw(context) {
-    context.fillStyle = '#f00'
-    context.fillRect(this.x, this.y, this.width, this.height)
+    this.projectiles.forEach((projectile) => {
+      projectile.draw(context)
+    })
+
     if (this.game.debug) {
-      context.strokeStyle = '#000'
       context.strokeRect(this.x, this.y, this.width, this.height)
-      context.lineWidth = 1
-      context.beginPath()
-      const dx = this.game.input.mouseX - (this.x + this.width / 2)
-      const dy = this.game.input.mouseY - (this.y + this.height / 2)
-      const maxLength = 60
-      const angle = Math.atan2(dy, dx)
-      const x = this.x + this.width / 2 + maxLength * Math.cos(angle)
-      const y = this.y + this.height / 2 + maxLength * Math.sin(angle)
-      context.moveTo(this.x + this.width / 2, this.y + this.height / 2)
-      context.lineTo(x, y)
-      context.stroke()
+      context.fillStyle = 'black'
+      context.font = '12px Arial'
+      context.fillText(this.frameX, this.x, this.y - 5)
+      context.fillText(this.grounded, this.x + 20, this.y - 5)
     }
 
     // draw sprite image
@@ -149,25 +131,10 @@ export default class Player {
     context.restore()
   }
 
-  shoot(mouseX, mouseY) {
-    // get angle between player and mouse
-    const angle = Math.atan2(
-      mouseY - (this.y + this.height / 2),
-      mouseX - (this.x + this.width / 2)
+  shoot() {
+    this.sound.playShootSound()
+    this.projectiles.push(
+      new Projectile(this.game, this.x + this.width, this.y + this.height / 2)
     )
-
-    if (this.ammo > 0) {
-      this.ammo--
-      this.projectiles.push(
-        new Projectile(
-          this.game,
-          this.x + this.width / 2,
-          this.y + this.height / 2,
-          angle
-        )
-      )
-    } else {
-      console.log('out of ammo')
-    }
   }
 }
