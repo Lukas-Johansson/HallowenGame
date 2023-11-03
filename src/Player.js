@@ -14,7 +14,7 @@ export default class Player {
 
     this.speedX = 0;
     this.speedY = 0;
-    this.maxSpeed = 1,5;
+    this.maxSpeed = 0.75;
 
     this.maxAmmo = 20;
     this.ammo = 20;

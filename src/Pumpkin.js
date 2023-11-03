@@ -9,7 +9,7 @@ export default class Pumpkin extends Enemy {
     this.height = 55;
     this.x = x;
     this.y = y;
-    this.speed = 1;
+    this.speed = 0.75;
     this.lives = Math.floor(Math.random() * 3) + 1;
     super.update
   }
