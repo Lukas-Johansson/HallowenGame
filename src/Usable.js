@@ -1,33 +1,34 @@
 export default class Usable {
-  constructor(game, imageUrl) {
+  constructor(game, imageUrl, x, y, width, height) {
     this.game = game;
-    this.x = 0;
-    this.y = 0;
+    this.x = x;
+    this.y = y;
+    this.width = width; // Set the width
+    this.height = height; // Set the height
     this.image = new Image();
-    this.image.src = imageUrl; // Set the image source
+    this.image.onload = () => {
+      // Set the width and height after the image is loaded
+      this.width = width;
+      this.height = height;
+    };
+    this.image.src = imageUrl;
     this.type = 'usable';
     this.markedForDeletion = false;
   }
-    
-    update() {
-      this.y 
-      this.x 
-      if (this.x < 0 || this.x > this.game.width) this.markedForDeletion = true
-      if (this.y < 0 || this.y > this.game.height) this.markedForDeletion = true
-    }
-  
-    draw(context) {
+
+  update() {
+    if (this.x < 0 || this.x > this.game.width) this.markedForDeletion = true;
+    if (this.y < 0 || this.y > this.game.height) this.markedForDeletion = true;
+  }
+
+  draw(context) {
+    // Only draw the image if it's loaded
+    if (this.image.complete && this.width && this.height) {
       context.drawImage(this.image, this.x, this.y, this.width, this.height);
-  
+
       if (this.game.debug) {
-        context.strokeRect(this.x, this.y, this.width, this.height)
-        context.fillStyle = 'black'
-        context.font = '20px Arial'
-        context.fillText(this.lives, this.x, this.y - 5)
-        context.font = '12px Arial'
-        context.fillText(`x: ${this.x.toFixed()}`, this.x + 20, this.y - 5)
-        context.fillText(`y: ${this.y.toFixed()}`, this.x + 20, this.y - 20)
+        // Rest of your debug code...
       }
     }
   }
-  
+}
