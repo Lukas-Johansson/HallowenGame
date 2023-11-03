@@ -1,6 +1,6 @@
 import Usable from './Usable';
 
-const defaultImageUrl = 'src/assets/sprites/764.png'; // Set the default image path
+const defaultImageUrl = 'src\assets\sprites.764.png'; 
 
 // Preload the default image
 const defaultImage = new Image();
