@@ -33,6 +33,11 @@ export default class Game {
             this.gameTime += deltaTime;
         }
 
+        if (this.gameOver) {
+            this.player.ammo = 0;
+            return
+        }
+
         if (this.enemiesSpawnedInWave < this.enemiesPerWave) {
             if (this.enemyTimer > this.enemyInterval) {
                 const enemiesToSpawn = Math.min(this.enemiesPerWave - this.enemiesSpawnedInWave);
