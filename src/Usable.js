@@ -1,12 +1,13 @@
 export default class Usable {
-    constructor(game, color) {
-      this.game = game
-      this.x = 0
-      this.y = 0
-      this.color = color
-      this.type = 'usable'
-      this.markedForDeletion = false
-    }
+  constructor(game, imageUrl) {
+    this.game = game;
+    this.x = 0;
+    this.y = 0;
+    this.image = new Image();
+    this.image.src = imageUrl; // Set the image source
+    this.type = 'usable';
+    this.markedForDeletion = false;
+  }
     
     update() {
       this.y 
@@ -16,8 +17,7 @@ export default class Usable {
     }
   
     draw(context) {
-      context.fillStyle = this.color
-      context.fillRect(this.x, this.y, this.width, this.height)
+      context.drawImage(this.image, this.x, this.y, this.width, this.height);
   
       if (this.game.debug) {
         context.strokeRect(this.x, this.y, this.width, this.height)

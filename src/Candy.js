@@ -1,15 +1,18 @@
-import Usable from './Usable'
+import Usable from './Usable';
+
+const defaultImageUrl = 'src/assets/sprites/764.png'; // Set the default image path
+
+// Preload the default image
+const defaultImage = new Image();
+defaultImage.src = defaultImageUrl;
 
 export default class Candy extends Usable {
-  constructor(game, x, y) {
-    super(game)
-    this.width = 32
-    this.height = 32
-    this.x = x
-    this.y = y
-    this.speed = 0
-    this.lives = 1
-    this.color = 'blue'
-    this.type = 'usable'
+  constructor(game, x, y, image = defaultImage) {
+    super(game, x, y, image);
+    this.width = 32;
+    this.height = 32;
+    this.speed = 0;
+    this.lives = 1;
+    this.type = 'usable';
   }
 }
