@@ -1,6 +1,6 @@
 import Usable from './Usable';
 
-const defaultImageUrl = 'src\assets\sprites.764.png'; 
+const defaultImageUrl = 'src/assets/sprites/764.png'; 
 
 // Preload the default image
 const defaultImage = new Image();
@@ -16,3 +16,4 @@ export default class Candy extends Usable {
     this.type = 'usable';
   }
 }
+
