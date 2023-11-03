@@ -4,9 +4,9 @@ export default class Player {
   constructor(game) {
     this.game = game;
     this.playerImage = new Image();
-    this.playerImage.src = 'src/assets/sprites/player.webp'; // Set the path to your player image
-    this.width = 85;
-    this.height = 100;
+    this.playerImage.src = 'src/assets/sprites/player.png'; // Set the path to your player image
+    this.width = 43;
+    this.height = 60;
     this.x = this.game.width / 2 - this.width / 2;
     this.y = this.game.height / 2 - this.height / 2;
 
@@ -16,10 +16,10 @@ export default class Player {
     this.speedY = 0;
     this.maxSpeed = 0.75;
 
-    this.maxAmmo = 20;
-    this.ammo = 20;
+    this.maxAmmo = 1000;
+    this.ammo = 50;
     this.ammoTimer = 0;
-    this.ammoInterval = 500;
+    this.ammoInterval = 1000;
 
     this.lives = 10;
   }

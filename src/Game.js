@@ -59,8 +59,8 @@ export default class Game {
                 const enemiesToSpawn = Math.min(this.enemiesPerWave - this.enemiesSpawnedInWave);
 
                 for (let i = 0; i < enemiesToSpawn; i++) {
-                    let x = Math.random() < 0.5 ? 0 : this.width;
-                    let y = Math.random() < 0.5 ? 0 : this.height;
+                    let x = Math.random() < 0.5 ? 0 : this.width + 0.2;
+                    let y = Math.random() < 0.5 ? 0 : this.height + 0.2;
                     if (x === 0) {
                         y = Math.random() * this.height;
                     } else if (x === this.width) {
@@ -71,7 +71,7 @@ export default class Game {
                         y = Math.random() * this.height;
                     }
                     if (Math.random() < 0.2) {
-                        this.usable.push(new Candy(this, 20, 150));
+                        this.usable.push(new Candy(this, x, y));
                     } else {
                         this.enemies.push(new Pumpkin(this, x, y));
                     }
