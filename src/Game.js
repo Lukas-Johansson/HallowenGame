@@ -38,6 +38,22 @@ export default class Game {
             return
         }
 
+        this.player.update(deltaTime);
+
+        // Perform boundary checks for the player
+        if (this.player.x < 0) {
+            this.player.x = 0;
+        }
+        if (this.player.x + this.player.width > this.width) {
+            this.player.x = this.width - this.player.width;
+        }
+        if (this.player.y < 0) {
+            this.player.y = 0;
+        }
+        if (this.player.y + this.player.height > this.height) {
+            this.player.y = this.height - this.player.height;
+        }
+
         if (this.enemiesSpawnedInWave < this.enemiesPerWave) {
             if (this.enemyTimer > this.enemyInterval) {
                 const enemiesToSpawn = Math.min(this.enemiesPerWave - this.enemiesSpawnedInWave);
