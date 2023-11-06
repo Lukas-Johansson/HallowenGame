@@ -201,7 +201,4 @@ export default class UserInterface {
       return (true)
     }
   }
-
-  
-
 }
