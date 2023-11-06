@@ -1,6 +1,6 @@
 import InputHandler from './InputHandler.js';
 import Player from './Player.js';
-import UserInterface from './UserInterface.js';
+import UserInterface from './Ui/UserInterface.js';
 import Pumpkin from './Pumpkin.js';
 import Candy from './Candy.js';
 
@@ -14,9 +14,13 @@ export default class Game {
         this.keys = [];
         this.usable = [];
         this.enemies = [];
-        this.gameOver = false;               
-        this.gravity = 1;
+
+        this.gameReset = false;
+        this.startGame = false;
+        this.gameOver = false;
         this.debug = false;
+
+        this.gravity = 1;
         this.gameTime = 0;
         this.wave = 0; // Current wave
         this.enemyTimer = 0;
@@ -29,12 +33,22 @@ export default class Game {
     }
 
     update(deltaTime) {
-        if (!this.gameOver) {
-            this.gameTime += deltaTime;
+        if (!this.startGame) {
+            return
         }
 
+        if (this.gameReset) {
+            this.reset()
+            this.player = new Player(this)
+            this.gameReset = false
+        }
+
+        if (!this.gameOver) {
+            this.gameTime += deltaTime
+        }
+
+        //stop game
         if (this.gameOver) {
-            this.player.ammo = 0;
             return
         }
 
@@ -85,10 +99,10 @@ export default class Game {
         } else {
             // All enemies in the current wave have been spawned.
             if (this.enemies.length === 0) {
-                if(this.usable.length === 0) {
-                this.waveInProgress = false; // Set the flag to indicate that the wave is no longer in progress
-                this.startWave(); // Start a new wave
-            }
+                if (this.usable.length === 0) {
+                    this.waveInProgress = false; // Set the flag to indicate that the wave is no longer in progress
+                    this.startWave(); // Start a new wave
+                }
             }
         }
 
@@ -175,4 +189,11 @@ export default class Game {
             object1.y + object1.height > object2.y
         );
     }
+
+    reset() {
+        this.gameTime = 0;
+        this.wave = 0; // Current wave
+        this.gameOver = false;
+      }
+    
 }
