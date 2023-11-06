@@ -34,7 +34,12 @@ export default class Game {
 
     update(deltaTime) {
         if (!this.startGame) {
+            this.player.ammo = 0;
             return
+        }
+
+        if (this.wave === 0) {
+            this.player.ammo = 50;
         }
 
         if (this.gameReset) {
@@ -73,8 +78,8 @@ export default class Game {
                 const enemiesToSpawn = Math.min(this.enemiesPerWave - this.enemiesSpawnedInWave);
 
                 for (let i = 0; i < enemiesToSpawn; i++) {
-                    let x = Math.random() < 0.5 ? 0 : this.width + 0.2;
-                    let y = Math.random() < 0.5 ? 0 : this.height + 0.2;
+                    let x = Math.random() < 0.5 ? 0 : this.width + 10;
+                    let y = Math.random() < 0.5 ? 0 : this.height + 10;
                     if (x === 0) {
                         y = Math.random() * this.height;
                     } else if (x === this.width) {
@@ -84,8 +89,21 @@ export default class Game {
                     } else {
                         y = Math.random() * this.height;
                     }
+
+                    let a = Math.random() < 0.5 ? 0 : 10;
+                    let b = Math.random() < 0.5 ? 0 : 10;
+                    if (a === 0) {
+                        b = Math.random() * this.height;
+                    } else if (a === this.width) {
+                        a = Math.random() * this.height;
+                    } else if (b === 0) {
+                        a = Math.random() * this.width;
+                    } else {
+                        b = Math.random() * this.height;
+                    }
+
                     if (Math.random() < 0.2) {
-                        this.usable.push(new Candy(this, x, y));
+                        this.usable.push(new Candy(this, a, b));
                     } else {
                         this.enemies.push(new Pumpkin(this, x, y));
                     }

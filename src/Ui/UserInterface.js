@@ -17,20 +17,10 @@ export default class UserInterface {
     this.statWindow = false
     // buttons 
     this.startGameButton
-    this.statsButton
     this.backButton
     this.gameOverButton
     this.menuButton
-
-    // Upgrade Screen 
-    this.upgradeScreenButtons = []
-    this.damageButton // X
-    this.attackSpeedButton // X
-    this.movementSpeedButton // X
-    this.maxHPButton // X
-    this.maxAmmoButton // X
-    this.ammoRegenIncreaseButton // X
-    this.coinIncreaseButton // X
+    this.controlButton
 
     window.addEventListener('mousedown', (event) => {
       if (!this.game.startGame && !this.statWindow) {
@@ -41,6 +31,7 @@ export default class UserInterface {
           this.statWindow = true
         }
       }
+      
       else if (!this.game.startGame && this.statWindow) {
         if (this.isInsideButton(this.backButton.x, this.backButton.y, this.backButton.width, this.backButton.height)) {
           this.statWindow = false
@@ -54,8 +45,6 @@ export default class UserInterface {
           }
         });
       }
-
-
       if (this.game.gameOver) {
         if (this.isInsideButton(this.gameOverButton.x, this.gameOverButton.y, this.gameOverButton.width, this.gameOverButton.height)) {
           this.game.gameReset = true
@@ -121,18 +110,20 @@ export default class UserInterface {
 
     // when the game has not started 
     if (!this.game.startGame && !this.statWindow) {
+
       context.textAlign = 'center'
       context.font = `50px ${this.fontFamily}`
       context.fillText(
-        'Starting screen',
+        'Spökhunter',
         this.game.width / 2,
-        this.game.height / 2 - 200
+        this.game.height / 2 - 175
       )
+
       this.startGameButton = new Button(
         this.game,
         context,
         this.game.width / 2 - 100,
-        this.game.height / 2 + 30,
+        this.game.height / 2 + 100,
         200,
         50,
         'Start Game',
@@ -142,6 +133,30 @@ export default class UserInterface {
         this.fontFamily,
         0,
         10
+      )
+
+      context.textAlign = 'center'
+      context.font = `30px ${this.fontFamily}`
+      context.fillText(
+        'Move on [W] [A] [S] [D]',
+        this.game.width / 2,
+        this.game.height / 2 + 200,
+      )
+
+      context.textAlign = 'center'
+      context.font = `30px ${this.fontFamily}`
+      context.fillText(
+        'Aim with your mouse and click to fire bullets',
+        this.game.width / 2,
+        this.game.height / 2 + 250,
+      )
+
+      context.textAlign = 'center'
+      context.font = `30px ${this.fontFamily}`
+      context.fillText(
+        'The blue candy gives [10 ammo] once destroyed',
+        this.game.width / 2,
+        this.game.height / 2 + 300,
       )
     }
 
@@ -187,7 +202,6 @@ export default class UserInterface {
       context.fillText(`Coin blocks: ${this.game.coinsBlock}`, this.game.width - 20, 275)
 
     }
-
     context.restore()
   }
 
@@ -196,5 +210,7 @@ export default class UserInterface {
       return (true)
     }
   }
+
+  
 
 }
