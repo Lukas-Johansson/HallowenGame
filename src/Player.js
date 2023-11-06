@@ -1,10 +1,11 @@
 import Projectile from './Projectile.js';
+import playerimage from './assets/sprites/player.png'; // Set the path to your player image
 
 export default class Player {
   constructor(game) {
     this.game = game;
     this.playerImage = new Image();
-    this.playerImage.src = 'src/assets/sprites/player.png'; // Set the path to your player image
+    this.playerImage.src = playerimage; // Set the path to your player image
     this.width = 43;
     this.height = 60;
     this.x = this.game.width / 2 - this.width / 2;

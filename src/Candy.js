@@ -1,6 +1,6 @@
 import Usable from './Usable';
 
-const defaultImageUrl = 'src/assets/sprites/ammogodis.png';
+import defaultImageUrl from './assets/sprites/ammogodis.png';
 
 export default class Candy extends Usable {
   constructor(game, x, y) {

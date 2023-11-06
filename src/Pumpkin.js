@@ -1,6 +1,6 @@
 import Enemy from './Enemy.js';
 
-const defaultImageUrl = 'src/assets/sprites/ghost.png'; 
+import defaultImageUrl from './assets/sprites/ghost.png'; 
 
 export default class Pumpkin extends Enemy {
   constructor(game, x, y) {
