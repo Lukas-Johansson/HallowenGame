@@ -19,7 +19,7 @@ export default class Player {
     this.maxAmmo = 1000;
     this.ammo = 50;
     this.ammoTimer = 0;
-    this.ammoInterval = 1000;
+    this.ammoInterval = 5000;
 
     this.lives = 10;
   }
