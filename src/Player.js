@@ -22,7 +22,7 @@ export default class Player {
     this.ammoTimer = 0;
     this.ammoInterval = 5000;
 
-    this.lives = 1;
+    this.lives = 10;
   }
 
   update(deltaTime) {

@@ -153,6 +153,28 @@ export default class Game {
         }
     }
 
+    reset() {
+        this.keys = [];
+        this.usable = [];
+        this.enemies = [];
+
+        this.gameReset = false;
+        this.startGame = true;
+        this.gameOver = false;
+        this.debug = false;
+
+        this.gravity = 1;
+        this.gameTime = 0;
+        this.wave = 0; // Current wave
+        this.enemyTimer = 0;
+        this.enemyInterval = 1; // Adjust this interval as needed (e.g., increase it)
+        this.enemiesPerWave = 1; // Number of enemies per wave (e.g., reduce it)    
+        this.enemiesSpawnedInWave = 0; // Number of enemies spawned in the current wave
+        this.player = new Player(this);
+        this.waveInProgress = true; // Initialize the flag to indicate that a wave is in progress
+        this.round = 1; // Initialize the round to 1
+    }
+
     startWave() {
         this.wave++;
         this.enemiesSpawnedInWave = 0;
@@ -189,11 +211,5 @@ export default class Game {
             object1.y + object1.height > object2.y
         );
     }
-
-    reset() {
-        this.gameTime = 0;
-        this.wave = 0; // Current wave
-        this.gameOver = false;
-      }
     
 }
