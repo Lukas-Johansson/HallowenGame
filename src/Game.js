@@ -117,7 +117,7 @@ export default class Game {
         this.usable.forEach((usable) => {
             usable.update(this.player);
             if (this.checkCollisionUsable(this.player, usable)) {
-                this.player.ammo += 5;
+                this.player.ammo += 10;
                 usable.markedForDeletion = true;
             }
 
