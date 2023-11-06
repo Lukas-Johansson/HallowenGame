@@ -14,7 +14,7 @@ export default class Game {
         this.keys = [];
         this.usable = [];
         this.enemies = [];
-        this.gameOver = false;
+        this.gameOver = false;               
         this.gravity = 1;
         this.debug = false;
         this.gameTime = 0;
