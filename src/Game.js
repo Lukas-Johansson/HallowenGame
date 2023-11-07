@@ -91,7 +91,7 @@ export default class Game {
                     }
 
                     if (Math.random() < 0.2) {
-                        this.usable.push(new Candy(this, x + 50, y + 50));
+                        this.usable.push(new Candy(this, x + 75, y + 75));
                     } else {
                         this.enemies.push(new Pumpkin(this, x, y));
                     }
