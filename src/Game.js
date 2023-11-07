@@ -147,7 +147,7 @@ export default class Game {
                         usable.lives -= projectile.damage;
                     } else {
                         usable.markedForDeletion = true;
-                        this.player.ammo += 5;
+                        this.player.ammo += 10;
                     }
                     projectile.markedForDeletion = true;
                 }
