@@ -1,3 +1,6 @@
+
+I alla kod-exempel betyder ```...``` att det finns kod där men den skrivs inte ut. Detta för att kodens exempel inte ska bli för långa.
+
 Projektet är skapat med vite.
 Spelet är uppdelat i ett flertal klasser/moduler för att hålla koden ren och lättläslig.
 

@@ -1,0 +1,4 @@
+För att få detta att fungera så krävs en del ändringar i koden.
+* Game klassen behöver få en referens till canvas elementet från setup funktionen. Detta för att kunna räkna ut musens position i förhållande till canvas elementet.
+* InputHandler klassen behöver ändras så att den lyssna på mousemove och mouseclick event. Musens position används tillsamans med spelarens position för att räkna ut vinkeln mellan spelaren och musen. Denna vinkel används sendan för att räkna ut projektilens hastighet i x och y led.
+* Projectile klassen behöver ändras så att den tar emot en hastighet i x och y led. Denna hastighet används för att flytta projektilen i update funktionen. Projektilen kan nu flyttas i en vinkel från spelaren.
