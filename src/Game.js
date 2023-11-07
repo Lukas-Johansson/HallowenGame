@@ -90,20 +90,8 @@ export default class Game {
                         y = Math.random() * this.height;
                     }
 
-                    let a = Math.random() < 0.5 ? 0 : 10;
-                    let b = Math.random() < 0.5 ? 0 : 10;
-                    if (a === 0) {
-                        b = Math.random() * this.height;
-                    } else if (a === this.width) {
-                        a = Math.random() * this.height;
-                    } else if (b === 0) {
-                        a = Math.random() * this.width;
-                    } else {
-                        b = Math.random() * this.height;
-                    }
-
                     if (Math.random() < 0.2) {
-                        this.usable.push(new Candy(this, a, b));
+                        this.usable.push(new Candy(this, x + 50, y + 50));
                     } else {
                         this.enemies.push(new Pumpkin(this, x, y));
                     }
