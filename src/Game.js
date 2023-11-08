@@ -88,7 +88,7 @@ export default class Game {
                     let x = margin + Math.random() * xRange;
                     let y = margin + Math.random() * yRange;
 
-                    if (Math.random() < 0.2) {
+                    if (Math.random() < 0.3) {
                         this.usable.push(new Candy(this, x + 75, y + 75));
                     } else {
                         this.enemies.push(new Pumpkin(this, x, y));
@@ -103,10 +103,8 @@ export default class Game {
         } else {
             // All enemies in the current wave have been spawned.
             if (this.enemies.length === 0) {
-                if (this.usable.length === 0) {
-                    this.waveInProgress = false; // Set the flag to indicate that the wave is no longer in progress
-                    this.startWave(); // Start a new wave
-                }
+                this.waveInProgress = false; // Set the flag to indicate that the wave is no longer in progress
+                this.startWave(); // Start a new wave
             }
         }
 
@@ -246,5 +244,5 @@ export default class Game {
             pumpkin2.y += moveY;
         }
     }
-    
+
 }
