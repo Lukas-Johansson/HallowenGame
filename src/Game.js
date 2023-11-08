@@ -53,6 +53,7 @@ export default class Game {
         }
 
         if (this.gameOver) {
+            this.player.ammo = 0;
             return;
         }
 
