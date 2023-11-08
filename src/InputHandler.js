@@ -13,6 +13,10 @@ export default class InputHandler {
           event.key === 'w' ||
           event.key === 'a' ||
           event.key === 's' ||
+          event.key === 'W' ||
+          event.key === 'A' ||
+          event.key === 'S' ||
+          event.key === 'D' ||
           event.key === 'd') &&
         this.game.keys.indexOf(event.key) === -1
       ) {

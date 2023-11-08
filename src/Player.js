@@ -30,22 +30,24 @@ export default class Player {
       this.game.gameOver = true;
     }
 
-    if (this.game.keys.includes('ArrowLeft') || this.game.keys.includes('a')) {
+    if ((this.game.keys.includes('ArrowLeft') || this.game.keys.includes('a') || this.game.keys.includes('A')) && this.x > 0) {
       this.speedX = -this.maxSpeed;
     } else if (
       this.game.keys.includes('ArrowRight') ||
-      this.game.keys.includes('d') 
+      this.game.keys.includes('d') ||
+      this.game.keys.includes('D') 
     ) {
       this.speedX = this.maxSpeed;
     } else {
       this.speedX = 0;
     }
 
-    if (this.game.keys.includes('ArrowUp') || this.game.keys.includes('w')) {
+    if ((this.game.keys.includes('ArrowUp') || this.game.keys.includes('w') || this.game.keys.includes('W')) && this.y > 0) {
       this.speedY = -this.maxSpeed;
     } else if (
       this.game.keys.includes('ArrowDown') ||
-      this.game.keys.includes('s')
+      this.game.keys.includes('s')||
+      this.game.keys.includes('S') 
     ) {
       this.speedY = this.maxSpeed;
     } else {
