@@ -78,8 +78,9 @@ export default class Game {
                 const enemiesToSpawn = Math.min(this.enemiesPerWave - this.enemiesSpawnedInWave);
 
                 for (let i = 0; i < enemiesToSpawn; i++) {
-                    let x = Math.random() < 0.5 ? 0 : this.width + 10;
-                    let y = Math.random() < 0.5 ? 0 : this.height + 10;
+                    const margin = 50;
+                    let x = margin + Math.random() * (this.width - 2 * margin);
+                    let y = margin + Math.random() * (this.height - 2 * margin);
                     if (x === 0) {
                         y = Math.random() * this.height;
                     } else if (x === this.width) {
