@@ -3,6 +3,7 @@ import Player from './Player.js';
 import UserInterface from './Ui/UserInterface.js';
 import Pumpkin from './Pumpkin.js';
 import Candy from './Candy.js';
+import Boss from './Boss.js'
 
 export default class Game {
     constructor(width, height, canvasPosition) {
@@ -93,6 +94,8 @@ export default class Game {
                         this.enemies.push(new Pumpkin(this, x, y));
                     } else {
                         this.enemies.push(new Pumpkin(this, x, y));
+                        this.enemies.push(new Boss(this, x, y));
+
                     }
                 }
         
