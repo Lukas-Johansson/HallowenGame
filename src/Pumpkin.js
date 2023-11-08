@@ -8,7 +8,7 @@ export default class Pumpkin extends Enemy {
     this.height = 50
     this.x = x
     this.y = y
-    this.speed = 2
+    this.speed = 120
     this.lives = Math.floor(Math.random() * 3) + 3
     this.color = 'transparent'
     this.type = 'skeleton'
@@ -29,14 +29,14 @@ export default class Pumpkin extends Enemy {
     this.flip = false
   }
 
-  update(player) {
+  update(deltaTime, player) {
     const dx = player.x - this.x // calculate the x distance to the player
     const dy = player.y - this.y // calculate the y distance to the player
     const distance = Math.sqrt(dx * dx + dy * dy) // calculate the total distance to the player
     const speedX = (dx / distance) * this.speed // calculate the x speed towards the player
     const speedY = (dy / distance) * this.speed // calculate the y speed towards the player
-    this.x += speedX // move the enemy towards the player on the x axis
-    this.y += speedY // move the enemy towards the player on the y axis
+    this.x += speedX * (deltaTime / 1000) // move the enemy towards the player on the x axis
+    this.y += speedY * (deltaTime / 1000) // move the enemy towards the player on the y axis
 
     if (this.x > player.x) {
       this.flip = true

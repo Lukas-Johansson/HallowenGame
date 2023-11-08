@@ -113,7 +113,7 @@ export default class Game {
         this.player.update(deltaTime);
 
         this.enemies.forEach((enemy) => {
-            enemy.update(this.player);
+            enemy.update(deltaTime, this.player);
             if (this.checkCollision(this.player, enemy)) {
                 this.player.lives--;
                 enemy.markedForDeletion = true;
@@ -133,7 +133,7 @@ export default class Game {
         this.enemies = this.enemies.filter((enemy) => !enemy.markedForDeletion);
 
         this.usable.forEach((usable) => {
-            usable.update(this.player);
+            usable.update(deltaTime, this.player);
             if (this.checkCollisionUsable(this.player, usable)) {
                 this.player.ammo += 10;
                 usable.markedForDeletion = true;

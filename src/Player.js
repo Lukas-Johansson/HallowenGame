@@ -15,7 +15,7 @@ export default class Player {
 
     this.speedX = 0;
     this.speedY = 0;
-    this.maxSpeed = 1.5;
+    this.maxSpeed = 120;
 
     this.maxAmmo = 1000;
     this.ammo = 50;
@@ -52,8 +52,8 @@ export default class Player {
       this.speedY = 0;
     }
 
-    this.y += this.speedY;
-    this.x += this.speedX;
+    this.y += this.speedY * (deltaTime / 1000)
+    this.x += this.speedX * (deltaTime / 1000)
 
     if (this.ammoTimer > this.ammoInterval && this.ammo < this.maxAmmo) {
       this.ammoTimer = 0;
