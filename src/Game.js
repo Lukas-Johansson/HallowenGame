@@ -92,10 +92,11 @@ export default class Game {
                     if (Math.random() < 0.2) {
                         this.usable.push(new Candy(this, x, y));
                         this.enemies.push(new Pumpkin(this, x, y));
+                        if (this.wave === 5) {
+                            this.enemies.push(new Boss(this, x, y));
+                        }
                     } else {
                         this.enemies.push(new Pumpkin(this, x, y));
-                        this.enemies.push(new Boss(this, x, y));
-
                     }
                 }
         
@@ -111,7 +112,6 @@ export default class Game {
                 this.startWave(); // Start a new wave
             }
         }
-
         this.player.update(deltaTime);
 
         // Collision detection and resolution for pumpkins
