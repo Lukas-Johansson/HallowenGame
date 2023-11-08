@@ -21,7 +21,7 @@ export default class Pumpkin extends Enemy {
     this.frameX = 0
     this.frameY = 0
     this.maxFrame = 4
-    this.fps = 12
+    this.fps = 5
     this.timer = 0
     this.interval = 1000 / this.fps
 
