@@ -78,19 +78,16 @@ export default class Game {
                 const enemiesToSpawn = Math.min(this.enemiesPerWave - this.enemiesSpawnedInWave);
 
                 for (let i = 0; i < enemiesToSpawn; i++) {
-                    const margin = 50;
-                    let x = margin + Math.random() * (this.width - 2 * margin);
-                    let y = margin + Math.random() * (this.height - 2 * margin);
-                    if (x === 0) {
-                        y = Math.random() * this.height;
-                    } else if (x === this.width) {
-                        y = Math.random() * this.height;
-                    } else if (y === 0) {
-                        x = Math.random() * this.width;
-                    } else {
-                        y = Math.random() * this.height;
-                    }
-
+                    const margin = 15; // Adjust this margin value as needed
+                
+                    // Calculate the range within which candies should spawn
+                    const xRange = this.width - 2 * margin;
+                    const yRange = this.height - 2 * margin;
+                
+                    // Generate random positions within the range
+                    let x = margin + Math.random() * xRange;
+                    let y = margin + Math.random() * yRange;
+                
                     if (Math.random() < 0.2) {
                         this.usable.push(new Candy(this, x + 75, y + 75));
                     } else {
