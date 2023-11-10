@@ -15,8 +15,8 @@ export default class Projectile {
     this.image = new Image();
     this.image.src = spriteImage;
     this.frameX = 0;
-    this.maxFrame = 60; // Adjust this value based on the total number of frames in your sprite sheet
-    this.fps = 6;
+    this.maxFrame = 9; // Adjust this value based on the total number of frames in your sprite sheet
+    this.fps = 9;
     this.timer = 0;
     this.interval = 1000 / this.fps;
 
