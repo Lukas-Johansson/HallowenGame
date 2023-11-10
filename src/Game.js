@@ -91,10 +91,25 @@ export default class Game {
         
                     if (Math.random() < 0.2) {
                         this.usable.push(new Candy(this, x, y));
-                        this.enemies.push(new Pumpkin(this, x, y));
-                    } else {
-                        this.enemies.push(new Pumpkin(this, x, y));
                     }
+
+                    let a = Math.random() < 0.5 ? 0 : this.width // spawn on left or right edge
+                    let b = Math.random() < 0.5 ? 0 : this.height // spawn on top or bottom edge
+                    if (a === 0) {
+                      b = Math.random() * this.height // if on left edge, randomize y position
+                    } else if (a === this.width) {
+                      b = Math.random() * this.height // if on right edge, randomize y position
+                    } else if (b === 0) {
+                      a = Math.random() * this.width // if on top edge, randomize x position
+                    } else {
+                      a = Math.random() * this.width // if on bottom edge, randomize x position
+                    }
+                    if (Math.random() < 0.2) {
+                        this.enemies.push(new Pumpkin(this, a, b))
+                    } else {
+                      this.enemies.push(new Pumpkin(this, a, b))
+                    }
+                 
                 }
         
                 this.enemyTimer = 0;
@@ -107,11 +122,18 @@ export default class Game {
             if (this.enemies.length === 0) {
                 this.waveInProgress = false; // Set the flag to indicate that the wave is no longer in progress
                 this.startWave(); // Start a new wave
-                const margin = 15; 
-                const xRange = this.width - 2 * margin - 150; 
-                const yRange = this.height - 2 * margin - 150; 
-                let x = margin + 75 + Math.random() * xRange; 
-                let y = margin + 75 + Math.random() * yRange; 
+                let x = Math.random() < 0.5 ? 0 : this.width // spawn on left or right edge
+                let y = Math.random() < 0.5 ? 0 : this.height // spawn on top or bottom edge
+                if (x === 0) {
+                    y = Math.random() * this.height // if on left edge, randomize y position
+                  } else if (x === this.width) {
+                    y = Math.random() * this.height // if on right edge, randomize y position
+                  } else if (y === 0) {
+                    x = Math.random() * this.width // if on top edge, randomize x position
+                  } else {
+                    x = Math.random() * this.width // if on bottom edge, randomize x position
+                }
+                
                 if (this.wave === 5) {
                     this.enemies.push(new Boss(this, x, y));
                 }
@@ -176,7 +198,6 @@ export default class Game {
             // Handle game over
         }
     }
-
 
     reset() {
         this.keys = [];
