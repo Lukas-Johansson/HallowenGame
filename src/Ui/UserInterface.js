@@ -11,7 +11,7 @@ export default class UserInterface {
     this.purple = '#640080'
     this.green = '#08e600'
     this.red = '#cc0600'
-    this.orange = '#ff9a00'
+    this.orange = 'white'
 
     //stats window
     this.statWindow = false
