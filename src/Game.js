@@ -92,9 +92,6 @@ export default class Game {
                     if (Math.random() < 0.2) {
                         this.usable.push(new Candy(this, x, y));
                         this.enemies.push(new Pumpkin(this, x, y));
-                        if (this.wave === 5) {
-                            this.enemies.push(new Boss(this, x, y));
-                        }
                     } else {
                         this.enemies.push(new Pumpkin(this, x, y));
                     }
@@ -110,6 +107,14 @@ export default class Game {
             if (this.enemies.length === 0) {
                 this.waveInProgress = false; // Set the flag to indicate that the wave is no longer in progress
                 this.startWave(); // Start a new wave
+                const margin = 15; 
+                const xRange = this.width - 2 * margin - 150; 
+                const yRange = this.height - 2 * margin - 150; 
+                let x = margin + 75 + Math.random() * xRange; 
+                let y = margin + 75 + Math.random() * yRange; 
+                if (this.wave === 5) {
+                    this.enemies.push(new Boss(this, x, y));
+                }
             }
         }
         this.player.update(deltaTime);
