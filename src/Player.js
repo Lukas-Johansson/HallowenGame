@@ -39,7 +39,7 @@ export default class Player {
 
     this.frameX = 0
     this.maxFrame = 0 
-    this.animationFps = 5
+    this.animationFps = 4
     this.animationTimer = 0
     this.animationInterval = 1000 / this.animationFps
     this.idle = {

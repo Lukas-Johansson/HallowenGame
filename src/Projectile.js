@@ -13,14 +13,10 @@ export default class Projectile {
     this.markedForDeletion = false;
 
     this.image = new Image();
-    this.image.onload = () => {
-      // Start using the image after it's loaded
-    };
     this.image.src = spriteImage;
-
     this.frameX = 0;
-    this.maxFrame = 4; // Adjust this value based on the total number of frames in your sprite sheet
-    this.fps = 4;
+    this.maxFrame = 6; // Adjust this value based on the total number of frames in your sprite sheet
+    this.fps = 6;
     this.timer = 0;
     this.interval = 1000 / this.fps;
 
