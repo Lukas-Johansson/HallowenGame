@@ -149,7 +149,12 @@ export default class Player {
 
     if (this.game.debug) {
       context.strokeStyle = '#000';
-      context.strokeRect(this.x, this.y, this.width, this.height);
+      context.strokeRect(
+        this.flip ? this.x - this.width : this.x, // Adjust x-coordinate based on flip
+        this.y,
+        this.width,
+        this.height
+      );
       context.lineWidth = 1;
       context.beginPath();
       const dx = this.game.input.mouseX - (this.x + this.width / 2);
@@ -195,6 +200,8 @@ export default class Player {
       mouseY - (this.y + this.height / 2),
       mouseX - (this.x + this.width / 2)
     );
+
+    this.shooting = true;
 
     if (this.ammo > 0) {
       this.ammo--;
