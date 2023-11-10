@@ -1,15 +1,18 @@
 import Projectile from './Projectile.js';
-import playerimage from './assets/sprites/player.png'; // Set the path to your player image
+
+import idleAsset from './assets/sprites/Idle.png'
+import runAsset from './assets/sprites/walk.png'
+import attackAsset from './assets/sprites/attack.png'
 
 export default class Player {
   constructor(game) {
     this.game = game;
-    this.playerImage = new Image();
-    this.playerImage.src = playerimage; // Set the path to your player image
-    this.width = 43;
-    this.height = 60;
+    this.width = 128;
+    this.height = 100;
     this.x = this.game.width / 2 - this.width / 2;
     this.y = this.game.height / 2 - this.height / 2;
+
+    this.frameX = 0
 
     this.projectiles = [];
 
@@ -22,7 +25,42 @@ export default class Player {
     this.ammoTimer = 0;
     this.ammoInterval = 5000;
 
-    this.lives = 10;
+    this.lives = 10;  
+
+    // adding sprite image
+    const idleImage = new Image()
+    idleImage.src = idleAsset
+
+    const runImage = new Image()
+    runImage.src = runAsset
+
+    const attackImage = new Image()
+    attackImage.src = attackAsset
+
+    this.frameX = 0
+    this.maxFrame = 0 
+    this.animationFps = 5
+    this.animationTimer = 0
+    this.animationInterval = 1000 / this.animationFps
+    this.idle = {
+      image: idleImage,
+      frames: 7,
+    }
+    this.run = {
+      image: runImage,
+      frames: 7,
+    }
+    this.attack = {
+      image: attackImage,
+      frames: 9,
+    }
+    this.image = this.idle.image
+
+    // flip sprite direction
+    this.flip = false
+
+    // shooting
+    this.shooting = false
   }
 
   update(deltaTime) {
@@ -64,6 +102,37 @@ export default class Player {
       this.ammoTimer += deltaTime;
     }
 
+    if (this.shooting) {
+      this.maxFrame = this.attack.frames
+      this.image = this.attack.image
+      if (this.frameX === this.attack.frames - 1) {
+        this.shooting = false
+      }
+    } else if (this.speedX !== 0) {
+      this.maxFrame = this.run.frames
+      this.image = this.run.image
+    } else {
+      this.maxFrame = this.idle.frames
+      this.image = this.idle.image
+    }
+
+    if (this.speedX < 0) {
+      this.flip = true
+    } else if (this.speedX > 0) {
+      this.flip = false
+    }
+
+    if (this.animationTimer > this.animationInterval) {
+      this.frameX++
+      this.animationTimer = 0
+    } else {
+      this.animationTimer += deltaTime
+    }
+
+    if (this.frameX >= this.maxFrame) {
+      this.frameX = 0
+    }
+
     // Update and filter projectiles
     this.projectiles.forEach((projectile) => {
       projectile.update(deltaTime);
@@ -74,7 +143,9 @@ export default class Player {
   }
 
   draw(context) {
-    context.drawImage(this.playerImage, this.x, this.y, this.width, this.height);
+    this.projectiles.forEach((projectile) => {
+      projectile.draw(context)
+    })
 
     if (this.game.debug) {
       context.strokeStyle = '#000';
@@ -92,10 +163,31 @@ export default class Player {
       context.stroke();
     }
 
+    if (this.flip) {
+      context.save()
+      context.scale(-1, 1)
+    }
+    // s = source, d = destination
+    // image, sx, sy, swidth, sheight, dx, dy, dwidth, dheight
+    context.drawImage(
+      this.image,
+      this.frameX * this.width,
+      -10,
+      this.width,
+      this.height,
+      this.flip ? this.x * -1 - this.width : this.x,
+      this.y,
+      this.width,
+      this.height
+    )
+
+    context.restore()
+
     this.projectiles.forEach((projectile) => {
       projectile.draw(context);
     });
   }
+
 
   shoot(mouseX, mouseY) {
     // get angle between player and mouse
