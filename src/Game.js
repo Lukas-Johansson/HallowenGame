@@ -137,6 +137,22 @@ export default class Game {
                 if (this.wave === 5) {
                     this.enemies.push(new Boss(this, x, y));
                 }
+
+                if (this.wave === 10) {
+                    this.enemies.push(new Boss(this, x, y));
+                }
+
+                if (this.wave === 15) {
+                    this.enemies.push(new Boss(this, x, y));
+                }
+
+                if (this.wave === 20) {
+                    this.enemies.push(new Boss(this, x, y));
+                }
+
+                if (this.wave === 25) {
+                    this.enemies.push(new Boss(this, x, y));
+                }
             }
         }
         this.player.update(deltaTime);
