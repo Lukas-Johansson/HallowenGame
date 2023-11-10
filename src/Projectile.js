@@ -1,10 +1,10 @@
-import spriteImage from './assets/sprites/Charge_2.png';
+import spriteImage from './assets/sprites/hardcore.png';
 
 export default class Projectile {
   constructor(game, x, y, angle) {
     this.game = game;
-    this.width = 64;
-    this.height = 128;
+    this.width = 32;
+    this.height = 32;
     this.x = x;
     this.y = y;
     this.angle = angle;
@@ -15,7 +15,7 @@ export default class Projectile {
     this.image = new Image();
     this.image.src = spriteImage;
     this.frameX = 0;
-    this.maxFrame = 6; // Adjust this value based on the total number of frames in your sprite sheet
+    this.maxFrame = 60; // Adjust this value based on the total number of frames in your sprite sheet
     this.fps = 6;
     this.timer = 0;
     this.interval = 1000 / this.fps;
