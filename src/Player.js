@@ -193,15 +193,14 @@ export default class Player {
     });
   }
 
-
   shoot(mouseX, mouseY) {
     // get angle between player and mouse
     const angle = Math.atan2(
       mouseY - (this.y + this.height / 2),
       mouseX - (this.x + this.width / 2)
-    );
+    )
 
-    this.shooting = true;
+    this.shooting = true
 
     if (this.ammo > 0) {
       this.ammo--;
@@ -212,9 +211,9 @@ export default class Player {
           this.y + this.height / 2,
           angle
         )
-      );
+      )
     } else {
-      console.log('out of ammo');
+      console.log('out of ammo')
     }
   }
 }
